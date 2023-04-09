@@ -1,17 +1,36 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import Found from './Found.svelte';
 	import Square from './Square.svelte';
-	import Timer from './Countdown.svelte';
+	import Countdown from './Countdown.svelte';
 	import { emojis } from './data.js';
 	import { shuffle } from './utils.js';
-	import Countdown from './Countdown.svelte';
 
-	export let size = 6;
+	const sizes = {
+		easy: 4,
+		medium: 6,
+		hard: 8
+	} as const;
 
-	function create_game() {
+	type Difficulty = keyof typeof sizes;
+
+	let size: (typeof sizes)[Difficulty];
+	let grid: string[] = [];
+	let found: string[] = [];
+	let a: number;
+	let b: number;
+	let remaining: number;
+	let playing: boolean;
+	let reset_timeout: number;
+
+	export function start(difficulty: Difficulty) {
+		size = sizes[difficulty];
+		found = [];
+		a = b = -1;
+		remaining = 60 * 1000;
+		playing = true;
+
 		const sliced = emojis.slice();
-		const pairs = [];
+		const pairs: string[] = [];
 
 		// pick a set of emojis at random
 		for (let i = 0; i < (size * size) / 2; i += 1) {
@@ -22,26 +41,8 @@
 		}
 
 		// repeat the set
-		const grid = shuffle([...pairs, ...pairs]);
+		grid = shuffle([...pairs, ...pairs]);
 
-		return {
-			pairs,
-			grid
-		};
-	}
-
-	let game = create_game();
-
-	let found: string[] = [];
-	let a: number;
-	let b: number;
-	let reset_timeout: number;
-
-	let remaining = 60 * 1000;
-	let playing = false;
-
-	function start() {
-		playing = true;
 		function loop() {
 			remaining -= 1000 / 60;
 
@@ -60,12 +61,11 @@
 	<div class="info">
 		<Countdown {remaining} />
 	</div>
+
 	<div class="grid">
-		{#each game.grid as square, i}
+		{#each grid as square, i}
 			<Square
 				on:click={() => {
-					if (!playing) start();
-
 					if (a > -1 && b > -1) {
 						clearTimeout(reset_timeout);
 						a = i;
@@ -73,9 +73,9 @@
 					} else if (a > -1) {
 						b = i;
 
-						if (game.grid[a] === game.grid[b]) {
+						if (grid[a] === grid[b]) {
 							// correct — remove from grid
-							found = [...found, game.grid[a]];
+							found = [...found, grid[a]];
 						} else {
 							// incorrect — reset after timeout
 							reset_timeout = setTimeout(() => {
@@ -89,7 +89,7 @@
 				value={square}
 				selected={a === i || b === i}
 				found={found.includes(square)}
-				group={i === game.grid.indexOf(square) ? 'a' : 'b'}
+				group={i === grid.indexOf(square) ? 'a' : 'b'}
 			/>
 		{/each}
 	</div>
@@ -124,7 +124,6 @@
 	.info {
 		display: flex;
 		flex-direction: column;
-		background: #ddd;
 		width: 80em;
 		height: 10em;
 	}

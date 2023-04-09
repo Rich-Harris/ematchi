@@ -3,17 +3,24 @@
 	import Modal from './Modal.svelte';
 	import '../styles.css';
 
-	let state: 'playing' | 'idle' = 'idle';
+	let state: 'waiting' | 'playing' | 'paused' | 'won' | 'lost' = 'waiting';
+
+	let game: Game;
 </script>
 
 <main>
-	<Game />
+	<Game bind:this={game} />
 
 	<Modal visible={state !== 'playing'} on:start={() => (state = 'playing')}>
-		<h1>ematchi</h1>
+		<h1>e<span>match</span>i</h1>
 		<p>the emoji matching game</p>
 
-		<button on:click={() => (state = 'playing')}>start</button>
+		<button
+			on:click={() => {
+				game.start('easy');
+				state = 'playing';
+			}}>start</button
+		>
 	</Modal>
 </main>
 
@@ -30,6 +37,10 @@
 		font-family: Grandstander;
 		font-size: 4rem;
 		margin: 0;
+	}
+
+	h1 span {
+		color: rgb(36, 182, 72);
 	}
 
 	p {

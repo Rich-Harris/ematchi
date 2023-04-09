@@ -1,4 +1,4 @@
-export function shuffle(array) {
+export function shuffle<T>(array: T[]) {
 	let i = array.length;
 
 	while (i--) {

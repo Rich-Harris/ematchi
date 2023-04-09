@@ -4,5 +4,5 @@
 
 <div class="timer">
 	<button aria-label="pause">...</button>
-	00:00
+	{remaining}
 </div>

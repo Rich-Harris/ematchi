@@ -30,11 +30,4 @@
 		pointer-events: all;
 		opacity: 1;
 	}
-
-	.modal {
-		background: white;
-		filter: drop-shadow(0 0 0.5em rgba(0, 0, 0, 0.2));
-		padding: 1em 2em;
-		border-radius: 1em;
-	}
 </style>

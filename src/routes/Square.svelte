@@ -11,8 +11,8 @@
 <div class="square" class:flipped={selected || found}>
 	<button on:click disabled={selected || found} />
 
+	<div class="background" class:found out:scale={{ duration: 600, delay: 500 }} />
 	{#if !found}
-		<div class="background" out:scale={{ duration: 600, delay: 500 }} />
 		<span out:send={{ key: `${value}:${group}` }}>{value}</span>
 	{/if}
 </div>
@@ -63,6 +63,10 @@
 		background: white;
 		border: 2px solid #222;
 		border-radius: 1em;
+	}
+
+	.background.found {
+		border: 2px solid #eee;
 	}
 
 	span {
