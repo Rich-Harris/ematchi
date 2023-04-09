@@ -42,7 +42,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		background: var(--bg);
+		background: #eee;
 		border-radius: 1em;
 		transform: rotateY(180deg);
 	}

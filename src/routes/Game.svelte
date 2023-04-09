@@ -1,7 +1,7 @@
 <script lang="ts">
-	import Found from './Found.svelte';
-	import Square from './Square.svelte';
 	import Countdown from './Countdown.svelte';
+	import Grid from './Grid.svelte';
+	import Found from './Found.svelte';
 	import { shuffle } from './utils.js';
 	import { createEventDispatcher } from 'svelte';
 	import type { Level } from './levels';
@@ -13,18 +13,12 @@
 	let size: number;
 	let grid: string[] = [];
 	let found: string[] = [];
-	let a: number;
-	let b: number;
 	let duration: number;
 	let remaining: number;
-	let reset_timeout: number;
 
 	export function reset(level: Level) {
 		size = level.size;
-		found = [];
-		a = b = -1;
-		remaining = duration = 60 * 1000;
-		playing = true;
+		remaining = duration = level.duration;
 
 		const sliced = level.emojis.slice();
 		const pairs: string[] = [];
@@ -39,6 +33,8 @@
 
 		// repeat the set
 		grid = shuffle([...pairs, ...pairs]);
+
+		found = [];
 	}
 
 	$: if (playing) {
@@ -63,17 +59,6 @@
 
 		loop();
 	}
-
-	function get_square_color(i: number, size: number) {
-		const row = Math.floor(i / size);
-		const col = i % size;
-
-		const r = (255 * (0.5 + col)) / size;
-		const g = (255 * (0.5 + row)) / size;
-		const b = 128;
-
-		return `rgb(${r},${g},${b})`;
-	}
 </script>
 
 <div class="game" style="--size: {size}">
@@ -90,40 +75,18 @@
 	</div>
 
 	<div class="grid">
-		{#each grid as square, i}
-			<Square
-				on:click={() => {
-					if (a > -1 && b > -1) {
-						clearTimeout(reset_timeout);
-						a = i;
-						b = -1;
-					} else if (a > -1) {
-						b = i;
+		<Grid
+			{grid}
+			{found}
+			{size}
+			on:found={(event) => {
+				found = [...found, event.detail.emoji];
 
-						if (grid[a] === grid[b]) {
-							// correct — remove from grid
-							found = [...found, grid[a]];
-
-							if (found.length === (size * size) / 2) {
-								dispatch('win');
-							}
-						} else {
-							// incorrect — reset after timeout
-							reset_timeout = setTimeout(() => {
-								a = b = -1;
-							}, 1000);
-						}
-					} else {
-						a = i;
-					}
-				}}
-				value={square}
-				selected={a === i || b === i}
-				found={found.includes(square)}
-				group={i === grid.indexOf(square) ? 'a' : 'b'}
-				--bg={get_square_color(i, size)}
-			/>
-		{/each}
+				if (found.length === (size * size) / 2) {
+					dispatch('win');
+				}
+			}}
+		/>
 	</div>
 
 	<div class="info">
