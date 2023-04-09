@@ -129,6 +129,8 @@
 	.info {
 		display: flex;
 		flex-direction: column;
+		justify-content: center;
+		align-items: center;
 		width: 80em;
 		height: 10em;
 	}

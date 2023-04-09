@@ -41,16 +41,28 @@
 	}
 
 	.duration {
-		width: 100%;
-		height: 1em;
+		inline-size: 100%;
+		block-size: 1em;
 		background: #eee;
 		border-radius: 1em;
 		overflow: hidden;
 	}
 
 	.remaining {
-		width: calc(100% * var(--p));
-		height: 100%;
+		position: absolute;
+		inline-size: calc(100% * var(--p));
+		block-size: 100%;
 		background: #777;
+	}
+
+	@media (min-aspect-ratio: 1) {
+		.countdown {
+			flex-direction: row-reverse;
+			writing-mode: vertical-lr;
+		}
+
+		.remaining {
+			inset-inline-end: 0;
+		}
 	}
 </style>

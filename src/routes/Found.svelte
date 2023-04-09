@@ -20,6 +20,7 @@
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: center;
+		align-items: center;
 		gap: 0.5em;
 		z-index: 3;
 		filter: drop-shadow(0.2em 0.4em 0.6em rgba(0, 0, 0, 0.1));
@@ -42,5 +43,11 @@
 		width: 1em;
 		height: 1em;
 		line-height: 1;
+	}
+
+	@media (min-aspect-ratio: 1) {
+		.found {
+			/* flex-direction: column; */
+		}
 	}
 </style>
