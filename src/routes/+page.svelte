@@ -85,6 +85,7 @@
 		font-family: Grandstander;
 		font-size: 4rem;
 		margin: 0;
+		height: 1em;
 	}
 
 	h1 span {
