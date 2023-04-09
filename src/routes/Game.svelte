@@ -6,8 +6,6 @@
 	import { createEventDispatcher } from 'svelte';
 	import type { Level } from './levels';
 
-	export let playing: boolean;
-
 	const dispatch = createEventDispatcher();
 
 	let size: number;
@@ -15,8 +13,9 @@
 	let found: string[] = [];
 	let duration: number;
 	let remaining: number;
+	let playing: boolean;
 
-	export function reset(level: Level) {
+	export function start(level: Level) {
 		size = level.size;
 		remaining = duration = level.duration;
 
@@ -33,12 +32,16 @@
 
 		// repeat the set
 		grid = shuffle([...pairs, ...pairs]);
-
 		found = [];
+
+		resume();
 	}
 
-	$: if (playing) {
+	export function resume() {
+		playing = true;
 		countdown();
+
+		dispatch('play');
 	}
 
 	function countdown() {
@@ -53,6 +56,7 @@
 			remaining = remaining_at_start - (Date.now() - start);
 
 			if (remaining <= 0) {
+				playing = false;
 				dispatch('lose');
 			}
 		}
@@ -68,6 +72,7 @@
 				{remaining}
 				{duration}
 				on:click={() => {
+					playing = false;
 					dispatch('pause');
 				}}
 			/>
@@ -75,18 +80,23 @@
 	</div>
 
 	<div class="grid">
-		<Grid
-			{grid}
-			{found}
-			{size}
-			on:found={(event) => {
-				found = [...found, event.detail.emoji];
+		{#key grid}
+			<Grid
+				{grid}
+				{found}
+				on:found={(event) => {
+					found = [...found, event.detail.emoji];
 
-				if (found.length === (size * size) / 2) {
-					dispatch('win');
-				}
-			}}
-		/>
+					if (found.length === (size * size) / 2) {
+						playing = false;
+						setTimeout(() => {
+							playing = false;
+							dispatch('win');
+						}, 1000);
+					}
+				}}
+			/>
+		{/key}
 	</div>
 
 	<div class="info">

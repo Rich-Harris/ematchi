@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { scale } from 'svelte/transition';
 	import { send } from './transitions';
 
 	export let value: string;
@@ -11,7 +10,7 @@
 <div class="square" class:flipped={selected || found}>
 	<button on:click disabled={selected || found} />
 
-	<div class="background" class:found out:scale={{ duration: 600, delay: 500 }} />
+	<div class="background" class:found />
 	{#if !found}
 		<span out:send={{ key: `${value}:${group}` }}>{value}</span>
 	{/if}

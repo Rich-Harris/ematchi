@@ -18,8 +18,8 @@
 		top: 0;
 		display: grid;
 		place-items: center;
-		background: rgba(255, 255, 255, 0.8);
-		backdrop-filter: blur(20px);
+		background: rgba(255, 255, 255, 0);
+		backdrop-filter: blur(10px);
 		z-index: 999;
 		transition: all 0.2s;
 	}

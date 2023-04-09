@@ -12,7 +12,9 @@
 <main>
 	<Game
 		bind:this={game}
-		playing={state === 'playing'}
+		on:play={() => {
+			state = 'playing';
+		}}
 		on:pause={() => {
 			state = 'paused';
 		}}
@@ -26,8 +28,10 @@
 
 	{#if state !== 'playing'}
 		<Modal>
-			<h1>e<span>match</span>i</h1>
-			<p>the emoji matching game</p>
+			<header>
+				<h1>e<span>match</span>i</h1>
+				<p>the emoji matching game</p>
+			</header>
 
 			{#if state === 'won' || state === 'lost'}
 				<p>you {state}! play again?</p>
@@ -39,26 +43,13 @@
 
 			<div class="buttons">
 				{#if state === 'paused'}
-					<button
-						on:click={() => {
-							state = 'playing';
-						}}
-					>
-						resume
-					</button>
-
-					<button
-						on:click={() => {
-							state = 'waiting';
-						}}
-					>
-						quit
-					</button>
+					<button on:click={() => game.resume()}>resume</button>
+					<button on:click={() => (state = 'waiting')}> quit </button>
 				{:else}
 					{#each levels as level}
 						<button
 							on:click={() => {
-								game.reset(level);
+								game.start(level);
 								state = 'playing';
 							}}
 						>
@@ -81,9 +72,13 @@
 		justify-content: center;
 	}
 
-	h1 {
+	header {
+		font-size: min(5vw, 2rem);
 		font-family: Grandstander;
-		font-size: 4rem;
+	}
+
+	h1 {
+		font-size: 4em;
 		margin: 0;
 		height: 1em;
 	}
