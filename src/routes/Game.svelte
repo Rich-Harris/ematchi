@@ -39,14 +39,25 @@
 
 		// repeat the set
 		grid = shuffle([...pairs, ...pairs]);
+	}
+
+	$: if (playing) {
+		countdown();
+	}
+
+	function countdown() {
+		const start = Date.now();
+		const remaining_at_start = remaining;
 
 		function loop() {
-			remaining -= 1000 / 60;
+			if (!playing) return;
 
-			if (remaining > 0) {
-				requestAnimationFrame(loop);
-			} else {
-				playing = false;
+			requestAnimationFrame(loop);
+
+			remaining = remaining_at_start - (Date.now() - start);
+
+			if (remaining <= 0) {
+				dispatch('lose');
 			}
 		}
 
@@ -67,14 +78,15 @@
 
 <div class="game" style="--size: {size}">
 	<div class="info">
-		<Countdown
-			{remaining}
-			{duration}
-			{playing}
-			on:click={() => {
-				dispatch('pause');
-			}}
-		/>
+		{#if playing}
+			<Countdown
+				{remaining}
+				{duration}
+				on:click={() => {
+					dispatch('pause');
+				}}
+			/>
+		{/if}
 	</div>
 
 	<div class="grid">
@@ -91,6 +103,10 @@
 						if (grid[a] === grid[b]) {
 							// correct — remove from grid
 							found = [...found, grid[a]];
+
+							if (found.length === (size * size) / 2) {
+								dispatch('win');
+							}
 						} else {
 							// incorrect — reset after timeout
 							reset_timeout = setTimeout(() => {

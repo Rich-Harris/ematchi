@@ -1,9 +1,10 @@
 <script lang="ts">
-	export let visible: boolean;
+	import { fade, scale } from 'svelte/transition';
+	import { cubicOut } from 'svelte/easing';
 </script>
 
-<div class="modal-background" class:visible>
-	<div class="modal">
+<div class="modal-background" transition:fade={{ duration: 200 }}>
+	<div class="modal" transition:scale={{ start: 0.9, duration: 400, easing: cubicOut }}>
 		<slot />
 	</div>
 </div>
@@ -18,16 +19,8 @@
 		display: grid;
 		place-items: center;
 		background: rgba(255, 255, 255, 0.8);
-		backdrop-filter: none;
-		opacity: 0;
+		backdrop-filter: blur(20px);
 		z-index: 999;
-		pointer-events: none;
 		transition: all 0.2s;
-	}
-
-	.visible {
-		backdrop-filter: blur(10px);
-		pointer-events: all;
-		opacity: 1;
 	}
 </style>
