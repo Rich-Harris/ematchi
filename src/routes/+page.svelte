@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Game from './Game.svelte';
 	import Modal from './Modal.svelte';
+	import { levels } from './levels';
 	import '../styles.css';
 
 	let state: 'waiting' | 'playing' | 'paused' | 'won' | 'lost' = 'waiting';
@@ -11,6 +12,7 @@
 <main>
 	<Game
 		bind:this={game}
+		playing={state === 'playing'}
 		on:pause={() => {
 			state = 'paused';
 		}}
@@ -20,12 +22,26 @@
 		<h1>e<span>match</span>i</h1>
 		<p>the emoji matching game</p>
 
-		<button
-			on:click={() => {
-				game.start('hard');
-				state = 'playing';
-			}}>start</button
-		>
+		{#if state === 'paused'}
+			<button
+				on:click={() => {
+					state = 'playing';
+				}}
+			>
+				start
+			</button>
+		{:else}
+			{#each levels as level}
+				<button
+					on:click={() => {
+						game.reset(level);
+						state = 'playing';
+					}}
+				>
+					{level.label}
+				</button>
+			{/each}
+		{/if}
 	</Modal>
 </main>
 

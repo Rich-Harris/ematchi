@@ -2,38 +2,31 @@
 	import Found from './Found.svelte';
 	import Square from './Square.svelte';
 	import Countdown from './Countdown.svelte';
-	import { emojis } from './data.js';
 	import { shuffle } from './utils.js';
 	import { createEventDispatcher } from 'svelte';
+	import type { Level } from './levels';
+
+	export let playing: boolean;
 
 	const dispatch = createEventDispatcher();
 
-	const sizes = {
-		easy: 4,
-		medium: 6,
-		hard: 8
-	} as const;
-
-	type Difficulty = keyof typeof sizes;
-
-	let size: (typeof sizes)[Difficulty];
+	let size: number;
 	let grid: string[] = [];
 	let found: string[] = [];
 	let a: number;
 	let b: number;
 	let duration: number;
 	let remaining: number;
-	let playing: boolean;
 	let reset_timeout: number;
 
-	export function start(difficulty: Difficulty) {
-		size = sizes[difficulty];
+	export function reset(level: Level) {
+		size = level.size;
 		found = [];
 		a = b = -1;
 		remaining = duration = 60 * 1000;
 		playing = true;
 
-		const sliced = emojis.slice();
+		const sliced = level.emojis.slice();
 		const pairs: string[] = [];
 
 		// pick a set of emojis at random
