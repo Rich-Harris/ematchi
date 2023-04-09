@@ -1,9 +1,13 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+	import Found from './Found.svelte';
 	import Square from './Square.svelte';
+	import Timer from './Countdown.svelte';
 	import { emojis } from './data.js';
 	import { shuffle } from './utils.js';
+	import Countdown from './Countdown.svelte';
 
-	export let size = 4;
+	export let size = 6;
 
 	function create_game() {
 		const sliced = emojis.slice();
@@ -28,22 +32,70 @@
 
 	let game = create_game();
 
-	let current_guess: number | null = null;
+	let found: string[] = [];
+	let a: number;
+	let b: number;
+	let reset_timeout: number;
+
+	let remaining = 60 * 1000;
+	let playing = false;
+
+	function start() {
+		playing = true;
+		function loop() {
+			remaining -= 1000 / 60;
+
+			if (remaining > 0) {
+				requestAnimationFrame(loop);
+			} else {
+				playing = false;
+			}
+		}
+
+		loop();
+	}
 </script>
 
-<div class="game">
-	<div class="grid" style="--size: {size}">
-		{#each game.grid as square}
-			<Square value={square} />
+<div class="game" style="--size: {size}">
+	<div class="info">
+		<Countdown {remaining} />
+	</div>
+	<div class="grid">
+		{#each game.grid as square, i}
+			<Square
+				on:click={() => {
+					if (!playing) start();
+
+					if (a > -1 && b > -1) {
+						clearTimeout(reset_timeout);
+						a = i;
+						b = -1;
+					} else if (a > -1) {
+						b = i;
+
+						if (game.grid[a] === game.grid[b]) {
+							// correct — remove from grid
+							found = [...found, game.grid[a]];
+						} else {
+							// incorrect — reset after timeout
+							reset_timeout = setTimeout(() => {
+								a = b = -1;
+							}, 1000);
+						}
+					} else {
+						a = i;
+					}
+				}}
+				value={square}
+				selected={a === i || b === i}
+				found={found.includes(square)}
+				group={i === game.grid.indexOf(square) ? 'a' : 'b'}
+			/>
 		{/each}
 	</div>
 
 	<div class="info">
-		<div class="pairs" />
-		<div class="timer">
-			<button aria-label="pause">...</button>
-			00:00
-		</div>
+		<Found {found} />
 	</div>
 </div>
 
@@ -54,16 +106,19 @@
 		justify-content: center;
 		align-items: center;
 		font-size: min(1vmin, 0.5em);
-		gap: 1em;
+		gap: 2em;
 		height: 100%;
 	}
 
 	.grid {
 		display: grid;
 		grid-template-columns: repeat(var(--size), 1fr);
+		grid-template-rows: repeat(var(--size), 1fr);
 		grid-gap: 1em;
 		width: 80em;
 		aspect-ratio: 1;
+		perspective: 100vw;
+		z-index: 2;
 	}
 
 	.info {
@@ -72,14 +127,6 @@
 		background: #ddd;
 		width: 80em;
 		height: 10em;
-	}
-
-	span {
-		display: flex;
-		font-size: 4em;
-		justify-content: center;
-		align-items: center;
-		background: #eee;
 	}
 
 	@media (min-aspect-ratio: 1/1) {

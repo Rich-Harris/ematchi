@@ -1,13 +1,77 @@
 <script lang="ts">
+	import { scale } from 'svelte/transition';
+	import { send } from './transitions';
+
 	export let value: string;
+	export let selected: boolean;
+	export let found: boolean;
+	export let group: 'a' | 'b';
 </script>
 
-<button>{value}</button>
+<div class="square" class:flipped={selected || found}>
+	<button on:click disabled={selected || found} />
+
+	{#if !found}
+		<div class="background" out:scale={{ duration: 600, delay: 500 }} />
+		<span out:send={{ key: `${value}:${group}` }}>{value}</span>
+	{/if}
+</div>
 
 <style>
+	.square {
+		display: flex;
+		width: 100%;
+		height: 100%;
+		align-items: center;
+		justify-content: center;
+		transition: filter 0.2s;
+		transform-style: preserve-3d;
+		transform: rotateY(180deg);
+		transition: transform 0.4s;
+	}
+
+	.square * {
+		backface-visibility: hidden;
+	}
+
 	button {
-		font-size: 6em;
+		position: absolute;
+		width: 100%;
+		height: 100%;
 		border: none;
-		background: #eee;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background: #f4f4f4;
+		border-radius: 1em;
+		transform: rotateY(180deg);
+	}
+
+	button:disabled {
+		color: inherit;
+	}
+
+	.flipped {
+		transform: rotateY(0);
+		z-index: 2;
+	}
+
+	.background {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		background: white;
+		border: 2px solid #222;
+		border-radius: 1em;
+	}
+
+	span {
+		display: block;
+		font-size: 6em;
+		width: 1em;
+		height: 1em;
+		line-height: 1;
+		z-index: 2;
+		pointer-events: none;
 	}
 </style>

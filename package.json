@@ -22,5 +22,9 @@
 		"typescript": "^5.0.0",
 		"vite": "^4.2.0"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"@fontsource/bangers": "^4.5.9",
+		"@fontsource/grandstander": "^4.5.10"
+	}
 }
