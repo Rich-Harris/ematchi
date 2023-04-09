@@ -4,6 +4,9 @@
 	import Countdown from './Countdown.svelte';
 	import { emojis } from './data.js';
 	import { shuffle } from './utils.js';
+	import { createEventDispatcher } from 'svelte';
+
+	const dispatch = createEventDispatcher();
 
 	const sizes = {
 		easy: 4,
@@ -18,6 +21,7 @@
 	let found: string[] = [];
 	let a: number;
 	let b: number;
+	let duration: number;
 	let remaining: number;
 	let playing: boolean;
 	let reset_timeout: number;
@@ -26,7 +30,7 @@
 		size = sizes[difficulty];
 		found = [];
 		a = b = -1;
-		remaining = 60 * 1000;
+		remaining = duration = 60 * 1000;
 		playing = true;
 
 		const sliced = emojis.slice();
@@ -55,11 +59,29 @@
 
 		loop();
 	}
+
+	function get_square_color(i: number, size: number) {
+		const row = Math.floor(i / size);
+		const col = i % size;
+
+		const r = (255 * (0.5 + col)) / size;
+		const g = (255 * (0.5 + row)) / size;
+		const b = 128;
+
+		return `rgb(${r},${g},${b})`;
+	}
 </script>
 
 <div class="game" style="--size: {size}">
 	<div class="info">
-		<Countdown {remaining} />
+		<Countdown
+			{remaining}
+			{duration}
+			{playing}
+			on:click={() => {
+				dispatch('pause');
+			}}
+		/>
 	</div>
 
 	<div class="grid">
@@ -90,8 +112,7 @@
 				selected={a === i || b === i}
 				found={found.includes(square)}
 				group={i === grid.indexOf(square) ? 'a' : 'b'}
-				--bg="rgb({255 * (((i % size) + 0.5) / size)},{255 *
-					((Math.floor(i / size) + 0.5) / size)},128)"
+				--bg={get_square_color(i, size)}
 			/>
 		{/each}
 	</div>

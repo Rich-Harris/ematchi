@@ -17,7 +17,7 @@
 		top: 0;
 		display: grid;
 		place-items: center;
-		background: rgba(255, 255, 255, 0);
+		background: rgba(255, 255, 255, 0.8);
 		backdrop-filter: none;
 		opacity: 0;
 		z-index: 999;
@@ -26,7 +26,7 @@
 	}
 
 	.visible {
-		backdrop-filter: blur(5px);
+		backdrop-filter: blur(10px);
 		pointer-events: all;
 		opacity: 1;
 	}

@@ -9,7 +9,12 @@
 </script>
 
 <main>
-	<Game bind:this={game} />
+	<Game
+		bind:this={game}
+		on:pause={() => {
+			state = 'paused';
+		}}
+	/>
 
 	<Modal visible={state !== 'playing'} on:start={() => (state = 'playing')}>
 		<h1>e<span>match</span>i</h1>
