@@ -17,7 +17,7 @@
 
 		<button
 			on:click={() => {
-				game.start('easy');
+				game.start('hard');
 				state = 'playing';
 			}}>start</button
 		>

@@ -1,7 +1,6 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@fontsource/bangers': ^4.5.9
   '@fontsource/grandstander': ^4.5.10
   '@sveltejs/adapter-auto': ^2.0.0
   '@sveltejs/kit': ^1.5.0
@@ -14,7 +13,6 @@ specifiers:
   vite: ^4.2.0
 
 dependencies:
-  '@fontsource/bangers': 4.5.9
   '@fontsource/grandstander': 4.5.10
 
 devDependencies:
@@ -227,10 +225,6 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
-
-  /@fontsource/bangers/4.5.9:
-    resolution: {integrity: sha512-LMnEzzgNLH4KRfY+4kJq9he9prCyUNnzulde72vaYggJ927Bw2mnHidoS3uGphLIkiq4kf1qcGFWFFFWPkq8bQ==}
-    dev: false
 
   /@fontsource/grandstander/4.5.10:
     resolution: {integrity: sha512-yEgNLPGyWTxZkvzICFNfiY6e9JM87wcwmPGUpoNl9jNF9zw9ZMBy266NDWrGZNMKZA2L2gZsWUdysSz9LDV2GQ==}

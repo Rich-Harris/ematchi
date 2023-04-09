@@ -24,7 +24,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@fontsource/bangers": "^4.5.9",
 		"@fontsource/grandstander": "^4.5.10"
 	}
 }

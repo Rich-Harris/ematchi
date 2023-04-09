@@ -90,6 +90,8 @@
 				selected={a === i || b === i}
 				found={found.includes(square)}
 				group={i === grid.indexOf(square) ? 'a' : 'b'}
+				--bg="rgb({255 * (((i % size) + 0.5) / size)},{255 *
+					((Math.floor(i / size) + 0.5) / size)},128)"
 			/>
 		{/each}
 	</div>
