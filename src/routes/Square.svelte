@@ -66,6 +66,7 @@
 		border: 2px solid var(--accent);
 		border-radius: 1em;
 		transition: border 0.2s;
+		pointer-events: none;
 	}
 
 	.background.found {
