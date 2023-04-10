@@ -1,9 +1,11 @@
 <script lang="ts">
+	import { fade } from 'svelte/transition';
+
 	export let remaining: number;
 	export let duration: number;
 </script>
 
-<div class="countdown">
+<div class="countdown" transition:fade={{ duration: 200 }}>
 	<button on:click>
 		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
 			<title>pause</title>
@@ -30,8 +32,9 @@
 	}
 
 	button {
-		width: 4rem;
-		height: 4rem;
+		font-size: max(8em, 2.4rem);
+		width: 1em;
+		aspect-ratio: 1;
 		background: transparent;
 		border: none;
 		padding: 0;
