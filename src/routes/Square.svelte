@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { send } from './transitions';
+	import { get_twemoji_url } from './utils';
 
 	export let value: string;
 	export let selected: boolean;
@@ -12,7 +13,7 @@
 
 	<div class="background" class:found />
 	{#if !found}
-		<span out:send={{ key: `${value}:${group}` }}>{value}</span>
+		<img alt={value} src={get_twemoji_url(value)} out:send={{ key: `${value}:${group}` }} />
 	{/if}
 </div>
 
@@ -27,6 +28,7 @@
 		transform-style: preserve-3d;
 		transform: rotateY(180deg);
 		transition: transform 0.4s;
+		user-select: none;
 	}
 
 	.square * {
@@ -44,6 +46,7 @@
 		background: var(--bg-2);
 		border-radius: 1em;
 		transform: rotateY(180deg);
+		-webkit-tap-highlight-color: transparent;
 	}
 
 	button:disabled {
@@ -69,7 +72,7 @@
 		border: 2px solid var(--bg-2);
 	}
 
-	span {
+	img {
 		display: block;
 		font-size: 6em;
 		width: 1em;

@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { flip } from 'svelte/animate';
 	import { receive } from './transitions';
-	import { fade, scale } from 'svelte/transition';
+	import { fade } from 'svelte/transition';
+	import { get_twemoji_url } from './utils';
 
 	export let found: string[];
 </script>
@@ -9,8 +10,8 @@
 <div class="found">
 	{#each found as emoji (emoji)}
 		<div in:fade={{ delay: 500 }} animate:flip={{ duration: 200, delay: 500 }} class="pair">
-			<span in:receive={{ key: `${emoji}:a` }}>{emoji}</span>
-			<span in:receive={{ key: `${emoji}:b` }}>{emoji}</span>
+			<img alt={emoji} src={get_twemoji_url(emoji)} in:receive={{ key: `${emoji}:a` }} />
+			<img alt={emoji} src={get_twemoji_url(emoji)} in:receive={{ key: `${emoji}:b` }} />
 		</div>
 	{/each}
 </div>
@@ -37,17 +38,11 @@
 		border-radius: 50%;
 	}
 
-	span {
+	img {
 		display: block;
 		position: absolute;
 		width: 1em;
 		height: 1em;
 		line-height: 1;
-	}
-
-	@media (min-aspect-ratio: 1) {
-		.found {
-			/* flex-direction: column; */
-		}
 	}
 </style>
