@@ -41,7 +41,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		background: #eee;
+		background: var(--bg-2);
 		border-radius: 1em;
 		transform: rotateY(180deg);
 	}
@@ -59,13 +59,14 @@
 		position: absolute;
 		width: 100%;
 		height: 100%;
-		background: white;
-		border: 2px solid #222;
+		background: var(--bg-1);
+		border: 2px solid var(--accent);
 		border-radius: 1em;
+		transition: border 0.2s;
 	}
 
 	.background.found {
-		border: 2px solid #eee;
+		border: 2px solid var(--bg-2);
 	}
 
 	span {

@@ -33,7 +33,7 @@
 		font-size: max(2.5em, calc(80em / (var(--size) * var(--size))));
 		width: 1.5em;
 		aspect-ratio: 1;
-		background: white;
+		background: var(--bg-1);
 		border-radius: 50%;
 	}
 

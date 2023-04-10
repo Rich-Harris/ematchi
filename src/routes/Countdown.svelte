@@ -43,7 +43,7 @@
 	.duration {
 		inline-size: 100%;
 		block-size: 1em;
-		background: #eee;
+		background: var(--bg-2);
 		border-radius: 1em;
 		overflow: hidden;
 	}
@@ -52,7 +52,7 @@
 		position: absolute;
 		inline-size: calc(100% * var(--p));
 		block-size: 100%;
-		background: #777;
+		background: var(--bg-3);
 	}
 
 	@media (min-aspect-ratio: 1) {

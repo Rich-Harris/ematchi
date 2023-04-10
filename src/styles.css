@@ -5,9 +5,30 @@
 	box-sizing: border-box;
 }
 
-html, body {
+:root {
+	--bg-1: #fff;
+	--bg-2: #eee;
+	--bg-3: #777;
+	--fg: #222;
+	--card-border: #222;
+	--card-border-found: #777;
+	--accent: hsl(315, 66%, 37%);
+}
+
+:root, body {
 	height: 100%;
 	margin: 0;
 	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-	color: #222;
+	background: var(--bg-1);
+	color: var(--fg);
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--bg-1: #111;
+		--bg-2: #444;
+		--bg-3: #666;
+		--fg: #eee;
+		--accent: hsl(275, 1040%, 57%);
+	}
 }

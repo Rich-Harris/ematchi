@@ -64,7 +64,6 @@
 
 <style>
 	main {
-		--accent: hsl(315, 66%, 37%);
 		text-align: center;
 		height: 100%;
 		display: flex;
