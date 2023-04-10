@@ -10,6 +10,11 @@
 	let game: Game;
 </script>
 
+<svelte:head>
+	<title>ematchi</title>
+	<meta name="description" content="the emoji matching game" />
+</svelte:head>
+
 <main>
 	<Game
 		bind:this={game}
@@ -117,5 +122,6 @@
 		height: 100%;
 		left: 50%;
 		top: 30%;
+		pointer-events: none;
 	}
 </style>
